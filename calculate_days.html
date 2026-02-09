@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ランダム数字抽出と判定</title>
+    <script>
+        function isPrime(num) {
+            if (num < 2) return false;
+            for (let i = 2; i <= Math.sqrt(num); i++) {
+                if (num % i === 0) return false;
+            }
+            return true;
+        }
+
+        function isSemiPrime(num) {
+            let count = 0;
+            for (let i = 2; i <= Math.sqrt(num); i++) {
+                while (num % i === 0) {
+                    num /= i;
+                    count++;
+                }
+                if (count > 2) return false;
+            }
+            if (num > 1) count++;
+            return count === 2;
+        }
+
+        function isSquare(num) {
+            const sqrt = Math.sqrt(num);
+            return sqrt === Math.floor(sqrt);
+        }
+
+        function isCube(num) {
+            const cbrt = Math.cbrt(num);
+            return cbrt === Math.floor(cbrt);
+        }
+
+        function isTesseractic(num) {
+            const fourthRoot = Math.pow(num, 1 / 4);
+            return fourthRoot === Math.floor(fourthRoot);
+        }
+
+        function generateRandomNumber() {
+            const randomNumber = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+            const number = parseInt(randomNumber, 10);
+            let prefix = '';
+            let description = '';
+
+            if (isPrime(number)) {
+                prefix = '⍴ᴎ.';
+                description = '素数です';
+            } else if (isSemiPrime(number)) {
+                prefix = 'ꓢ⍴.';
+                description = '半素数です';
+            } else if (isTesseractic(number)) {
+                prefix = 'ℚᴎ.';
+                description = '二重四方数です';
+            } else if (isCube(number)) {
+                prefix = 'ꓚᴎ.';
+                description = '立方数です';
+            } else if (isSquare(number)) {
+                prefix = 'ꓢᴎ.';
+                description = '平方数です';
+            } else {
+                prefix = 'ᴎ.';
+                description = '特別な性質はありません';
+            }
+
+            document.getElementById('result').textContent = `${prefix}${randomNumber} (${description})`;
+        }
+    </script>
+</head>
+
+<body>
+    <h1>ランダム数字抽出と判定</h1>
+    <p>0000~9999の中からランダムな数字を抽出し、それが素数、半素数、平方数、立方数、二重四方数かどうかを判定します。</p>
+
+    <button onclick="generateRandomNumber()">ランダム数字を生成</button>
+
+    <h2>結果</h2>
+    <p id="result">ここに結果が表示されます</p>
+</body>
+
+</html>
